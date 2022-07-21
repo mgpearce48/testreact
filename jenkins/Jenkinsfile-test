@@ -30,7 +30,7 @@ pipeline {
                 sh 'whoami'
                 sh 'pwd'
                 sh 'ls -la'
-                sh 'docker ps -la'
+                sh 'docker ps -a'
                 sh 'docker images'
             }
         }
