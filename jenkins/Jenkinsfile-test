@@ -1,5 +1,5 @@
 pipeline {
-    agent none
+    agent any
     environment {
         CI = 'true'
     }
@@ -26,7 +26,6 @@ pipeline {
             }
         }
         stage('Test') {
-            agent any
             steps {
                 sh 'whoami'
                 sh 'pwd'
