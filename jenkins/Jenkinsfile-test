@@ -23,6 +23,16 @@ pipeline {
                 sh './jenkins/scripts/kill.sh'
             }
         }
+        stage('Test') {
+            agent any
+            steps {
+                sh 'whoami'
+                sh 'pwd'
+                sh 'ls -la'
+                sh 'docker ps -la'
+                sh 'docker images'
+            }
+        }
         // stage('Test') {
         //     steps {
         //         sh 'chmod +x ./jenkins/scripts/test.sh'
