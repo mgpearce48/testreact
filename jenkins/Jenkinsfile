@@ -4,7 +4,7 @@ pipeline {
         CI = 'true'
     }
     stages {
-        stage('Build') {
+        stage('Build-Test') {
             agent {
                 docker {
                     image 'node:lts-buster-slim'
@@ -25,7 +25,7 @@ pipeline {
                 sh './jenkins/scripts/kill.sh'
             }
         }
-        stage('Test') {
+        stage('Build-Deploy') {
             steps {
                 sh 'whoami'
                 sh 'pwd'
@@ -34,20 +34,5 @@ pipeline {
                 sh 'docker images'
             }
         }
-        // stage('Test') {
-        //     steps {
-        //         sh 'chmod +x ./jenkins/scripts/test.sh'
-        //         sh './jenkins/scripts/test.sh'
-        //     }
-        // }
-        // stage('Deliver') {
-        //     steps {
-        //         sh 'chmod +x ./jenkins/scripts/deliver.sh'
-        //         sh 'chmod +x ./jenkins/scripts/kill.sh'
-        //         sh './jenkins/scripts/deliver.sh'
-        //         input message: 'Finished using the web site? (Click "Proceed" to continue)'
-        //         sh './jenkins/scripts/kill.sh'
-        //     }
-        // }
     }
 }
