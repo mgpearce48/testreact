@@ -32,6 +32,8 @@ pipeline {
                 sh 'ls -la'
                 sh 'docker ps -a'
                 sh 'docker images'
+                sh 'docker build -t testreact ./build'
+                sh 'docker images'
             }
         }
     }
