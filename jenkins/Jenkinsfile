@@ -2,6 +2,7 @@ pipeline {
     agent any
     environment {
         CI = 'true'
+        DOCKERHUB_CREDENTIALS = credentials('mgpearce-dockerhub')
     }
     stages {
         stage('Build-Test') {
@@ -27,9 +28,24 @@ pipeline {
         }
         stage('Build-Deploy') {
             steps {
-                sh 'docker build -t testreact .'
+                sh 'docker build -t mgpearce/testreact:latest .'
                 sh 'docker images'
             }
+        }
+        stage('Login-Dockerhub') {
+            steps {
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+            }
+        }
+        stage('Push-Dockerhub') {
+            steps {
+                sh 'docker push mgpearce/testreact:latest'
+            }
+        }
+    }
+    post {
+        always {
+        sh 'docker logout'
         }
     }
 }
