@@ -27,13 +27,8 @@ pipeline {
         }
         stage('Build-Deploy') {
             steps {
-                sh 'whoami'
-                sh 'pwd'
-                sh 'ls -la'
-                sh 'docker ps -a'
+                sh 'docker build -t testreact .'
                 sh 'docker images'
-                // sh 'docker build -t testreact .'
-                // sh 'docker images'
             }
         }
     }
