@@ -28,7 +28,7 @@ pipeline {
         }
         stage('Build-Deploy') {
             steps {
-                sh 'docker build -t mgpearce/testreact:latest .'
+                sh 'docker build -f Dockerfile.prod -t mgpearce/testreact:latest .'
                 sh 'docker images'
             }
         }
