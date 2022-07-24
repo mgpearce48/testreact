@@ -1,6 +1,6 @@
 FROM node:latest
 
-WORKDIR /react
+WORKDIR /app
 COPY package.json .
 RUN npm install
 COPY . .
