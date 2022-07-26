@@ -9,7 +9,7 @@ function App() {
         <p>
           Edit <code>src/App.js</code> and save to reload, then watch the magic!
         </p>
-        <p>A quick brown fox jumps over the lazy dog.</p>
+        <p>A quick brown fox jumps over the lazy dog. A quick brown fox jumps over the lazy dog.</p>
         <a
           className="App-link"
           href="https://reactjs.org"
