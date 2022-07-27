@@ -9,6 +9,7 @@ function App() {
         <p>
           Edit <code>src/App.js</code> and save to reload, then watch the magic!
         </p>
+        <p>The rain in Spain falls mainly on the plains.</p>
         <a
           className="App-link"
           href="https://reactjs.org"
