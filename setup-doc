@@ -70,11 +70,16 @@ git push [origin dev]
 ## (13) SSH to production server and pull latest image ##
 docker pull mgpearce/testreact
 
-## (14) Create and run new container ##
+## (14) Create and run new container on production server ##
 docker stop testreact
 docker run --name testreact -d --rm -it -p 80:80 mgpearce/testreact
 
-## (15) Remove old image ##
+## (15) Remove old image from production server ##
 docker rmi [imageID]
+
+## (16) Download merged main branch to local repository
+git switch main
+git pull origin main
+git switch dev
 
 ## End ##
