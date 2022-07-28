@@ -26,26 +26,26 @@ pipeline {
                 sh './jenkins/scripts/kill.sh'
             }
         }
-        stage('Build-Deploy') {
-            steps {
-                sh 'docker build -f Dockerfile.prod -t mgpearce/testreact:latest .'
-                sh 'docker images'
-            }
-        }
-        stage('Login-Dockerhub') {
-            steps {
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-            }
-        }
-        stage('Push-Dockerhub') {
-            steps {
-                sh 'docker push mgpearce/testreact:latest'
-            }
-        }
+        // stage('Build-Deploy') {
+        //     steps {
+        //         sh 'docker build -f Dockerfile.prod -t mgpearce/testreact:latest .'
+        //         sh 'docker images'
+        //     }
+        // }
+        // stage('Login-Dockerhub') {
+        //     steps {
+        //         sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+        //     }
+        // }
+        // stage('Push-Dockerhub') {
+        //     steps {
+        //         sh 'docker push mgpearce/testreact:latest'
+        //     }
+        // }
     }
-    post {
-        always {
-        sh 'docker logout'
-        }
-    }
+    // post {
+    //     always {
+    //     sh 'docker logout'
+    //     }
+    // }
 }
