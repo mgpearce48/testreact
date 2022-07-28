@@ -2,8 +2,7 @@ pipeline {
     agent any
     environment {
         CI = 'true'
-        // DOCKERHUB_CREDENTIALS = credentials('mgpearce-dockerhub')
-        registryCredential = 'mgpearce-dockerhub'
+        DOCKERHUB_CREDENTIALS = credentials('mgpearce-dockerhub')
     }
     stages {
         stage('Build-Test') {
