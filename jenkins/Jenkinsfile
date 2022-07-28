@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         CI = 'true'
-        DOCKERHUB_CREDENTIALS = credentials('mgpearce-dockerhub')
+        // DOCKERHUB_CREDENTIALS = credentials('mgpearce-dockerhub')
     }
     stages {
         stage('Build-Test') {
@@ -26,11 +26,11 @@ pipeline {
                 sh './jenkins/scripts/kill.sh'
             }
         }
-        // stage('Build-Deploy') {
-        //     steps {
-        //         sh 'docker build -f Dockerfile.prod -t mgpearce/testreact:latest .'
-        //         sh 'docker images'
-        //     }
+        stage('Build-Deploy') {
+            steps {
+                // sh 'docker build -f Dockerfile.prod -t mgpearce/testreact:latest .'
+                sh 'docker images'
+            }
         // }
         // stage('Login-Dockerhub') {
         //     steps {
