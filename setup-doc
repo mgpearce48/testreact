@@ -50,43 +50,43 @@ docker run --name testreact-dev --rm --detach \
   testreact-dev
 
 ### For each development phase ###
-## (7) Ensure local main repsitory is in sync with remote ##
-git pull origin main
+  ## (7) Ensure local main repsitory is in sync with remote ##
+  git pull origin main
 
-## (8) Create Git dev branch on local repository and switch to dev branch ##
-git checkout -b dev
+  ## (8) Create Git dev branch on local repository and switch to dev branch ##
+  git checkout -b dev
 
-## (9) Push dev branch to remote repository ##
-git push origin dev
+  ## (9) Push dev branch to remote repository ##
+  git push origin dev
 
-## (10) Ensure all dev code changes are in performed in dev branch ##
-git switch dev
+  ## (10) Ensure all dev code changes are in performed in dev branch ##
+  git switch dev
 
-### Iterative process during development
-## (11) Upload code changes to local and remote repositories ##
-git add .
-git commit -m "comments"
-git push [origin dev]
+  ### Iterative process during development
+  ## (11) Upload code changes to local and remote repositories ##
+  git add .
+  git commit -m "comments"
+  git push [origin dev]
 
-### On completion of development phase ###
-## (12) Merge changes to main branch in GitHub and delete dev branch ##
+  ### On completion of development phase ###
+  ## (12) Merge changes to main branch in GitHub and delete dev branch ##
 
-## (13) Build Jenkins pipeline and perform test in build environment ##
+  ## (13) Build Jenkins pipeline and perform test in build environment ##
 
-## (14) SSH to production server and pull latest image ##
-docker pull mgpearce/testreact
+  ## (14) SSH to production server and pull latest image ##
+  docker pull mgpearce/testreact
 
-## (15) Create and run new container on production server ##
-docker stop testreact
-docker run --name testreact -d --rm -it -p 80:80 mgpearce/testreact
+  ## (15) Create and run new container on production server ##
+  docker stop testreact
+  docker run --name testreact -d --rm -it -p 80:80 mgpearce/testreact
 
-## (16) Remove old image from production server ##
-docker rmi [imageID]
+  ## (16) Remove old image from production server ##
+  docker rmi [imageID]
 
-## (17) Download merged main branch to local repository
-git switch main
-git pull origin main
+  ## (17) Download merged main branch to local repository
+  git switch main
+  git pull origin main
 
-## (18) Delete local dev branch
-git branch -d dev
+  ## (18) Delete local dev branch
+  git branch -d dev
 
