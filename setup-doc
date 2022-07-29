@@ -62,10 +62,14 @@ docker run --name testreact-dev --rm --detach \
   ## (10) Ensure all dev code changes are in performed in dev branch ##
   git switch dev
 
-  ### Iterative process during development
+  ### Iterative process during development ###
+
   ## (11) Upload code changes to local and remote repositories ##
   git add .
   git commit -m "comments"
+  
+  git push --set-upstream origin dev
+  # or #
   git push [origin dev]
 
   ### On completion of development phase ###
