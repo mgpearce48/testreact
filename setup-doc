@@ -93,4 +93,3 @@ docker run --name testreact-dev --rm --detach \
 
   ## (18) Delete local dev branch
   git branch -d dev
-
