@@ -1,7 +1,6 @@
-### Setup Environment & CI/CD for testreact project ###
+#### Setup Environment & CI/CD for testreact project ####
 
-## Start ##
-
+### Create docker containers for Jenkins ###
 ## (1) Create network bridge ##
 docker network create jenkins
 
@@ -43,46 +42,54 @@ docker run --name jenkins-blueocean --detach \
   --env JAVA_OPTS="-Dhudson.plugins.git.GitSCM.ALLOW_LOCAL_CHECKOUT=true" \
   myjenkins-blueocean:2.346.1-1
 
-## (6) Create develoment image ##
-docker build -t testreact-dev
-
-## (7) Create container for development environment ##
+### Setup docker container for development environment ###
+## (6) Create container and volume for iterative development ##
 docker run --name testreact-dev --rm --detach \
   --volume ~/dev/react/testreact/src:/app/src \
   --interactive --tty --publish 3000:3000 \
   testreact-dev
 
-## (8) Create Git dev branch and push to remote ##
-git checkout -b dev
+### For each development phase ###
+  ## (7) Ensure local main repsitory is in sync with remote ##
+  git pull origin main
 
-## (9) Push dev branch to remote ##
-git push origin dev
+  ## (8) Create Git dev branch on local repository and switch to dev branch ##
+  git checkout -b dev
 
-## (10) Ensure all dev code changes are in dev branch ##
-git switch dev
+  ## (9) Push dev branch to remote repository ##
+  git push origin dev
 
-## (11) Upload code changes to repository ##
-git add .
-git commit -m "comments"
-git push [origin dev]
+  ## (10) Ensure all dev code changes are in performed in dev branch ##
+  git switch dev
 
-## (12) Login to GitHub and merge changes to main branch ##
+  ### Iterative process during development ###
 
-## (13) Build Jenkins pipeline (test in build environment) ##
+  ## (11) Upload code changes to local and remote repositories ##
+  git add .
+  git commit -m "comments"
+  
+  git push --set-upstream origin dev
+  # or #
+  git push [origin dev]
 
-## (14) SSH to production server and pull latest image ##
-docker pull mgpearce/testreact
+  ### On completion of development phase ###
+  ## (12) Merge changes to main branch in GitHub and delete dev branch ##
 
-## (15) Create and run new container on production server ##
-docker stop testreact
-docker run --name testreact -d --rm -it -p 80:80 mgpearce/testreact
+  ## (13) Build Jenkins pipeline and perform test in build environment ##
 
-## (16) Remove old image from production server ##
-docker rmi [imageID]
+  ## (14) SSH to production server and pull latest image ##
+  docker pull mgpearce/testreact
 
-## (17) Download merged main branch to local repository
-git switch main
-git pull origin main
-git switch dev
+  ## (15) Create and run new container on production server ##
+  docker stop testreact
+  docker run --name testreact -d --rm -it -p 80:80 mgpearce/testreact
 
-## End ##
+  ## (16) Remove old image from production server ##
+  docker rmi [imageID]
+
+  ## (17) Download merged main branch to local repository
+  git switch main
+  git pull origin main
+
+  ## (18) Delete local dev branch
+  git branch -d dev
