@@ -79,9 +79,10 @@ docker run --name testreact-dev --rm --detach \
   ## (14) SSH to production server and pull latest image ##
   docker pull mgpearce/testreact
 
-  ## (15) Create and run new container on production server ##
+  ## (15) Remove existing container and replace with new container on production server ##
   docker stop testreact
-  docker run --name testreact -d --rm -it -p 80:80 mgpearce/testreact
+  docker rm testreact
+  docker run --name testreact -d -it --restart unless-stopped -p 80:80 mgpearce/testreact
 
   ## (16) Remove old image from production server ##
   docker rmi [imageID]
