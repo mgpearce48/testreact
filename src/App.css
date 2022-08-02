@@ -30,6 +30,7 @@
 
 .App-text {
   text-decoration: underline;
+  text-decoration-color: coral;
 }
 
 @keyframes App-logo-spin {
