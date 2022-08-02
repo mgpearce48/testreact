@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        label "my-agent"
+    }
     environment {
         CI = 'true'
         DOCKERHUB_CREDENTIALS = credentials('mgpearce-dockerhub')
