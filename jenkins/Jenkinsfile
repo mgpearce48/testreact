@@ -28,6 +28,7 @@ pipeline {
         }
         stage('Build-Deploy') {
             steps {
+                sh 'docker-compose --version'
                 sh 'docker build -f Dockerfile.prod -t mgpearce/testreact:latest .'
             }
         }
