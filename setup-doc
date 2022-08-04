@@ -1,69 +1,29 @@
 #### Setup Environment & CI/CD for testreact project ####
 
-### Create docker containers for Jenkins ###
-## (1) Create network bridge ##
-docker network create jenkins
-
-## (2) Create container for docker:dind image ##
-docker run --name jenkins-docker --rm --detach \
-  --privileged --network jenkins --network-alias docker \
-  --env DOCKER_TLS_CERTDIR=/certs \
-  --volume jenkins-docker-certs:/certs/client \
-  --volume jenkins-data:/var/jenkins_home \
-  --publish 3001:3000 --publish 2376:2376 \
-  docker:dind --storage-driver overlay2
-
-## (3) Create Dockerfile ##
-FROM jenkins/jenkins:2.346.1-jdk11
-USER root
-RUN apt-get update && apt-get install -y lsb-release
-RUN curl -fsSLo /usr/share/keyrings/docker-archive-keyring.asc \
-  https://download.docker.com/linux/debian/gpg
-RUN echo "deb [arch=$(dpkg --print-architecture) \
-  signed-by=/usr/share/keyrings/docker-archive-keyring.asc] \
-  https://download.docker.com/linux/debian \
-  $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
-RUN apt-get update && apt-get install -y docker-ce-cli
-USER jenkins
-RUN jenkins-plugin-cli --plugins "blueocean:1.25.5 docker-workflow:1.28"
-
-## (4) Build image ##
-docker build -t myjenkins-blueocean:2.346.1-1 .
-
-## (5) Create jenkins container ##
-docker run --name jenkins-blueocean --detach \
-  --network jenkins --env DOCKER_HOST=tcp://docker:2376 \
-  --env DOCKER_CERT_PATH=/certs/client --env DOCKER_TLS_VERIFY=1 \
-  --publish 8080:8080 --publish 50000:50000 \
-  --volume jenkins-data:/var/jenkins_home \
-  --volume jenkins-docker-certs:/certs/client:ro \
-  --volume "$HOME"/dev/jenkins:/home \
-  --restart=on-failure \
-  --env JAVA_OPTS="-Dhudson.plugins.git.GitSCM.ALLOW_LOCAL_CHECKOUT=true" \
-  myjenkins-blueocean:2.346.1-1
+### Start Jenkins server (refer to GitHub mgpearce48/jenkins) ###
 
 ### Setup docker container for development environment ###
-## (6) Create container and volume for iterative development ##
+## Create container and volume for iterative development ##
 docker run --name testreact-dev --rm --detach \
   --volume ~/dev/react/testreact/src:/app/src \
   --interactive --tty --publish 3000:3000 \
   testreact-dev
 
 ### For each development phase ###
-  ## (7) Ensure local main repsitory is in sync with remote ##
+  ## Ensure local main repsitory is in sync with remote ##
   git pull origin main
 
-  ## (8) Create Git dev branch on local repository and switch to dev branch ##
+  ## Create Git dev branch on local repository and switch to dev branch ##
   git checkout -b dev
 
-  ## (9) Push dev branch to remote repository ##
+  ## Push dev branch to remote repository ##
   git push origin dev
 
-  ## (10) Ensure all dev code changes are in performed in dev branch ##
+  ## Ensure all dev code changes are in performed in dev branch ##
   git switch dev
 
   ### Iterative process during development ###
-  ## (11) Upload code changes to local and remote repositories ##
+  ## Upload code changes to local and remote repositories ##
   git add .
   git commit -m "comments"
   
@@ -72,24 +32,24 @@ docker run --name testreact-dev --rm --detach \
   git push [origin dev]
 
   ### On completion of development phase ###
-  ## (12) Merge changes to main branch in GitHub and delete dev branch ##
+  ## Merge changes to main branch in GitHub and delete dev branch ##
 
-  ## (13) Build Jenkins pipeline and perform test in build environment ##
+  ## Build Jenkins pipeline and perform test in build environment ##
 
-  ## (14) SSH to production server and pull latest image ##
+  ## SSH to production server and pull latest image ##
   docker pull mgpearce/testreact
 
-  ## (15) Remove existing container and replace with new container on production server ##
+  ## Remove old container and create new container on production server ##
   docker stop testreact
   docker rm testreact
   docker run --name testreact -d -it --restart unless-stopped -p 80:80 mgpearce/testreact
 
-  ## (16) Remove old image from production server ##
+  ## Remove old image from production server ##
   docker rmi [imageID]
 
-  ## (17) Download merged main branch to local repository
+  ## Download merged main branch to local repository
   git switch main
   git pull origin main
 
-  ## (18) Delete local dev branch
+  ## Delete local dev branch
   git branch -d dev
